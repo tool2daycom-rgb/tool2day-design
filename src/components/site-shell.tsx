@@ -33,12 +33,6 @@ export function SiteShell() {
                   </span>
                 </span>
               </a>
-              <a
-                href="https://tool2day.com"
-                className="hidden rounded-full border border-[var(--border)] bg-[var(--chip-bg)] px-3 py-1 text-xs font-semibold text-[var(--foreground)]/80 transition hover:opacity-90 sm:inline-flex"
-              >
-                {t.tools}
-              </a>
             </div>
             <div className="flex items-center gap-2">
               <span className="hidden text-xs text-[var(--muted)] md:inline">

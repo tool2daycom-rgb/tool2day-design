@@ -11,7 +11,7 @@ export default function Home() {
               href="/"
               className="inline-flex items-center gap-2.5 font-extrabold tracking-tight text-white"
             >
-              <DesignBrandMark size={28} animated />
+              <DesignBrandMark size={24} animated />
               <span>
                 tool2day<span className="font-semibold text-white/45"> design</span>
               </span>

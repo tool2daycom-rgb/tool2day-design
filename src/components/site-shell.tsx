@@ -40,9 +40,6 @@ export function SiteShell() {
           </div>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <span className="hidden text-xs text-[var(--muted)] lg:inline">
-              {t.tagline}
-            </span>
             <PrefsControls />
           </div>
         </div>

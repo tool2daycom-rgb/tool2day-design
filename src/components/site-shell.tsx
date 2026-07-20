@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Gallery } from "@/components/gallery";
 import { DesignBrandMark } from "@/components/design-brand-mark";
 import { TopBar } from "@/components/top-bar";
@@ -53,19 +52,7 @@ export function SiteShell() {
 
       <main className="pt-8">
         <div className="mx-auto mb-10 flex max-w-[1400px] flex-col items-center px-4 text-center sm:px-6">
-          <div className="flex w-full justify-center">
-            <div className="inline-flex rounded-2xl px-4 py-3 dark:bg-white/95 sm:px-6 sm:py-4">
-              <Image
-                src="/brand/logo-hero-eyes.png"
-                alt="TOOL 2 DAY"
-                width={700}
-                height={154}
-                priority
-                unoptimized
-                className="h-auto w-full max-w-[min(92vw,560px)] object-contain"
-              />
-            </div>
-          </div>
+          <DesignBrandMark size={96} animated />
           <h1 className="mt-8 text-2xl font-semibold tracking-tight sm:text-3xl">
             {t.heroTitle}
           </h1>

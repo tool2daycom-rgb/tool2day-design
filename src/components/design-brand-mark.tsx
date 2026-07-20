@@ -1,11 +1,28 @@
-/** شعار الأربع مربعات بأسلوب Bento */
+/** شعار الأربع مربعات بأسلوب Bento — ثابت أو متحرك (توسّع + دوران) */
 export function DesignBrandMark({
   size = 20,
   className = "",
+  animated = false,
 }: {
   size?: number;
   className?: string;
+  animated?: boolean;
 }) {
+  if (animated) {
+    return (
+      <video
+        className={`shrink-0 object-cover ${className}`}
+        style={{ width: size, height: size }}
+        src="/brand/brand-mark-spin.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        aria-hidden
+      />
+    );
+  }
+
   return (
     <span
       className={`inline-grid shrink-0 grid-cols-2 grid-rows-2 ${className}`}

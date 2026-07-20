@@ -8,24 +8,7 @@ import {
   type ThemeMode,
 } from "@/lib/templates";
 import { BentoPreview } from "@/components/bento-preview";
-
-const categories: { id: "all" | TemplateCategory; label: string }[] = [
-  { id: "all", label: "Discover" },
-  { id: "web", label: "Web Design" },
-  { id: "app", label: "App UI" },
-  { id: "ui", label: "UI Kits" },
-];
-
-const themes: { id: "all" | ThemeMode; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "dark", label: "Dark" },
-  { id: "light", label: "Light" },
-];
-
-function formatPrice(price: DesignTemplate["price"]) {
-  if (price === "free") return "Free";
-  return `$${price}`;
-}
+import { usePrefs } from "@/components/prefs-provider";
 
 function categoryFromQuery(): "all" | TemplateCategory {
   if (typeof window === "undefined") return "all";
@@ -35,17 +18,31 @@ function categoryFromQuery(): "all" | TemplateCategory {
 }
 
 export function Gallery() {
+  const { t } = usePrefs();
   const [category, setCategory] = useState<"all" | TemplateCategory>("all");
   const [theme, setTheme] = useState<"all" | ThemeMode>("dark");
+
+  const categories: { id: "all" | TemplateCategory; label: string }[] = [
+    { id: "all", label: t.discover },
+    { id: "web", label: t.webDesign },
+    { id: "app", label: t.appUi },
+    { id: "ui", label: t.uiKits },
+  ];
+
+  const themes: { id: "all" | ThemeMode; label: string }[] = [
+    { id: "all", label: t.filterAll },
+    { id: "dark", label: t.filterDark },
+    { id: "light", label: t.filterLight },
+  ];
 
   useEffect(() => {
     setCategory(categoryFromQuery());
   }, []);
 
   const filtered = useMemo(() => {
-    return templates.filter((t) => {
-      const catOk = category === "all" || t.category === category;
-      const themeOk = theme === "all" || t.theme === theme;
+    return templates.filter((item) => {
+      const catOk = category === "all" || item.category === category;
+      const themeOk = theme === "all" || item.theme === theme;
       return catOk && themeOk;
     });
   }, [category, theme]);
@@ -58,9 +55,14 @@ export function Gallery() {
     window.history.replaceState({}, "", url.toString());
   }
 
+  function formatPrice(price: DesignTemplate["price"]) {
+    if (price === "free") return t.free;
+    return `$${price}`;
+  }
+
   return (
     <div className="mx-auto w-full max-w-[1400px] px-4 pb-20 sm:px-6">
-      <div className="sticky top-[57px] z-30 -mx-4 mb-6 border-y border-white/10 bg-[#0a0a0a]/90 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-2xl sm:border sm:px-3">
+      <div className="sticky top-[93px] z-30 -mx-4 mb-6 border-y border-[var(--border)] bg-[var(--surface-2)]/90 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-2xl sm:border sm:px-3">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap gap-1.5">
             {categories.map((c) => {
@@ -72,8 +74,8 @@ export function Gallery() {
                   onClick={() => selectCategory(c.id)}
                   className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
                     isActive
-                      ? "bg-[#c8e7ff] text-[#0a0a0a]"
-                      : "bg-white/5 text-white/75 hover:bg-white/10 hover:text-white"
+                      ? "bg-[var(--filter-active-bg)] text-[var(--filter-active-fg)]"
+                      : "bg-[var(--chip-bg)] text-[var(--muted)] hover:text-[var(--foreground)]"
                   }`}
                 >
                   {c.label}
@@ -81,19 +83,19 @@ export function Gallery() {
               );
             })}
           </div>
-          <div className="inline-flex rounded-full border border-white/10 bg-white/5 p-0.5">
-            {themes.map((t) => (
+          <div className="inline-flex rounded-full border border-[var(--border)] bg-[var(--chip-bg)] p-0.5">
+            {themes.map((item) => (
               <button
-                key={t.id}
+                key={item.id}
                 type="button"
-                onClick={() => setTheme(t.id)}
+                onClick={() => setTheme(item.id)}
                 className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
-                  theme === t.id
-                    ? "bg-white text-black"
-                    : "text-white/60 hover:text-white"
+                  theme === item.id
+                    ? "bg-[var(--chip-active-bg)] text-[var(--chip-active-fg)]"
+                    : "text-[var(--muted)] hover:text-[var(--foreground)]"
                 }`}
               >
-                {t.label}
+                {item.label}
               </button>
             ))}
           </div>
@@ -104,7 +106,7 @@ export function Gallery() {
         {filtered.map((item) => (
           <article
             key={item.id}
-            className="group relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#111113] shadow-[0_20px_50px_rgba(0,0,0,0.35)] transition hover:-translate-y-0.5 hover:border-white/20"
+            className="group relative overflow-hidden rounded-[1.35rem] border border-[var(--card-border)] bg-[var(--surface)] shadow-[var(--card-shadow)] transition hover:-translate-y-0.5"
           >
             {item.variants ? (
               <span className="absolute end-3 top-3 z-10 inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-black/70 px-1.5 text-xs font-bold text-white backdrop-blur">
@@ -114,20 +116,20 @@ export function Gallery() {
             <div className="aspect-[4/3.2] overflow-hidden">
               <BentoPreview item={item} />
             </div>
-            <div className="flex items-start justify-between gap-3 border-t border-white/10 px-3.5 py-3">
+            <div className="flex items-start justify-between gap-3 border-t border-[var(--border)] px-3.5 py-3">
               <div className="min-w-0">
-                <h2 className="truncate text-sm font-semibold text-white">
+                <h2 className="truncate text-sm font-semibold">
                   {item.title}
                 </h2>
-                <p className="mt-0.5 truncate text-[11px] text-white/45">
+                <p className="mt-0.5 truncate text-[11px] text-[var(--muted)]">
                   {item.tags.join(" · ")}
                 </p>
               </div>
               <span
                 className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${
                   item.price === "free"
-                    ? "bg-emerald-400/15 text-emerald-300"
-                    : "bg-[#f5c518]/15 text-[#f5c518]"
+                    ? "bg-emerald-400/15 text-emerald-600 dark:text-emerald-300"
+                    : "bg-[#f5c518]/15 text-[#b45309] dark:text-[#f5c518]"
                 }`}
               >
                 {formatPrice(item.price)}
@@ -138,8 +140,8 @@ export function Gallery() {
       </div>
 
       {filtered.length === 0 ? (
-        <p className="py-20 text-center text-sm text-white/50">
-          No templates in this filter yet — more coming soon.
+        <p className="py-20 text-center text-sm text-[var(--muted)]">
+          {t.empty}
         </p>
       ) : null}
     </div>

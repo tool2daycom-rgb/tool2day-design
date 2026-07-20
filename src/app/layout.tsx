@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cairo, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +10,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic", "latin"],
+  weight: ["400", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -39,6 +45,25 @@ export const metadata: Metadata = {
   },
 };
 
+const themeBootScript = `
+(function(){
+  try {
+    var appearance = localStorage.getItem('t2d-design-appearance') || 'system';
+    var locale = localStorage.getItem('t2d-design-locale');
+    if (locale !== 'ar' && locale !== 'en') {
+      locale = (navigator.language || '').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en';
+    }
+    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = appearance === 'system' ? (systemDark ? 'dark' : 'light') : appearance;
+    var root = document.documentElement;
+    root.lang = locale;
+    root.dir = locale === 'ar' ? 'rtl' : 'ltr';
+    root.classList.add(theme);
+    root.dataset.theme = theme;
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -47,9 +72,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} ${cairo.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[#050505] text-white">{children}</body>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
+      <body className="min-h-full bg-[var(--background)] text-[var(--foreground)]">
+        {children}
+      </body>
     </html>
   );
 }

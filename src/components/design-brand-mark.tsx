@@ -1,4 +1,4 @@
-/** شعار الأربع مربعات بأسلوب Bento — ثابت أو متحرك (توسّع + دوران) */
+/** شعار الأربع مربعات شفاف — مع حركة توسّع ودوران اختيارية */
 export function DesignBrandMark({
   size = 20,
   className = "",
@@ -8,59 +8,42 @@ export function DesignBrandMark({
   className?: string;
   animated?: boolean;
 }) {
-  if (animated) {
-    return (
-      <video
-        className={`shrink-0 object-cover ${className}`}
-        style={{ width: size, height: size }}
-        src="/brand/brand-mark-spin.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-        aria-hidden
-      />
-    );
-  }
+  const gap = Math.max(1.5, size * 0.1);
+  const radius = Math.max(3, size * 0.22);
 
   return (
     <span
-      className={`inline-grid shrink-0 grid-cols-2 grid-rows-2 ${className}`}
-      style={{
-        width: size,
-        height: size,
-        gap: Math.max(1.5, size * 0.1),
-      }}
+      className={`inline-flex shrink-0 items-center justify-center ${className}`}
+      style={{ width: size, height: size }}
       aria-hidden
     >
       <span
-        className="block"
+        className={`inline-grid grid-cols-2 grid-rows-2 ${
+          animated ? "animate-brand-spin" : ""
+        }`}
         style={{
-          background: "#F5C518",
-          borderRadius: Math.max(3, size * 0.22),
+          width: "100%",
+          height: "100%",
+          gap,
         }}
-      />
-      <span
-        className="block"
-        style={{
-          background: "#5BCCF6",
-          borderRadius: Math.max(3, size * 0.22),
-        }}
-      />
-      <span
-        className="block"
-        style={{
-          background: "#B48CF0",
-          borderRadius: Math.max(3, size * 0.22),
-        }}
-      />
-      <span
-        className="block"
-        style={{
-          background: "#F071A8",
-          borderRadius: Math.max(3, size * 0.22),
-        }}
-      />
+      >
+        <span
+          className="block"
+          style={{ background: "#F5C518", borderRadius: radius }}
+        />
+        <span
+          className="block"
+          style={{ background: "#5BCCF6", borderRadius: radius }}
+        />
+        <span
+          className="block"
+          style={{ background: "#B48CF0", borderRadius: radius }}
+        />
+        <span
+          className="block"
+          style={{ background: "#F071A8", borderRadius: radius }}
+        />
+      </span>
     </span>
   );
 }

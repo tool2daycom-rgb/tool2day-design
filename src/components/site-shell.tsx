@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Gallery } from "@/components/gallery";
 import { DesignBrandMark } from "@/components/design-brand-mark";
 import { TopBar } from "@/components/top-bar";
@@ -50,9 +51,17 @@ export function SiteShell() {
         </header>
       </div>
 
-      <main className="pt-6">
-        <div className="mx-auto mb-6 max-w-[1400px] px-4 sm:px-6">
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+      <main className="pt-8">
+        <div className="mx-auto mb-10 flex max-w-[1400px] flex-col items-center px-4 text-center sm:px-6">
+          <Image
+            src="/brand/logo-hero-eyes.png"
+            alt="TOOL 2 DAY"
+            width={700}
+            height={154}
+            priority
+            className="h-auto w-full max-w-[min(92vw,560px)] object-contain dark:brightness-110"
+          />
+          <h1 className="mt-8 text-2xl font-semibold tracking-tight sm:text-3xl">
             {t.heroTitle}
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--hero-muted)]">

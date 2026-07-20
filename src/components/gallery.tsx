@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   templates,
   type DesignTemplate,
@@ -27,9 +27,20 @@ function formatPrice(price: DesignTemplate["price"]) {
   return `$${price}`;
 }
 
+function categoryFromQuery(): "all" | TemplateCategory {
+  if (typeof window === "undefined") return "all";
+  const raw = new URLSearchParams(window.location.search).get("category");
+  if (raw === "web" || raw === "app" || raw === "ui") return raw;
+  return "all";
+}
+
 export function Gallery() {
   const [category, setCategory] = useState<"all" | TemplateCategory>("all");
   const [theme, setTheme] = useState<"all" | ThemeMode>("dark");
+
+  useEffect(() => {
+    setCategory(categoryFromQuery());
+  }, []);
 
   const filtered = useMemo(() => {
     return templates.filter((t) => {
@@ -38,6 +49,14 @@ export function Gallery() {
       return catOk && themeOk;
     });
   }, [category, theme]);
+
+  function selectCategory(next: "all" | TemplateCategory) {
+    setCategory(next);
+    const url = new URL(window.location.href);
+    if (next === "all") url.searchParams.delete("category");
+    else url.searchParams.set("category", next);
+    window.history.replaceState({}, "", url.toString());
+  }
 
   return (
     <div className="mx-auto w-full max-w-[1400px] px-4 pb-20 sm:px-6">
@@ -50,7 +69,7 @@ export function Gallery() {
                 <button
                   key={c.id}
                   type="button"
-                  onClick={() => setCategory(c.id)}
+                  onClick={() => selectCategory(c.id)}
                   className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
                     isActive
                       ? "bg-[#c8e7ff] text-[#0a0a0a]"

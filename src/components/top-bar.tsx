@@ -1,6 +1,13 @@
 "use client";
 
-import type { ReactNode } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import Image from "next/image";
 import { usePrefs } from "@/components/prefs-provider";
 import type { Appearance, Locale } from "@/lib/prefs";
 
@@ -53,31 +60,31 @@ function IconSystem({ className = "" }: { className?: string }) {
   );
 }
 
-const appearanceIcons: Record<Appearance, ReactNode> = {
-  light: <IconSun className="size-3.5" />,
-  dark: <IconMoon className="size-3.5" />,
-  system: <IconSystem className="size-3.5" />,
-};
+const appearanceMenu: {
+  id: Appearance;
+  labelKey: "light" | "dark" | "system";
+  icon: ReactNode;
+}[] = [
+  { id: "light", labelKey: "light", icon: <IconSun className="size-4" /> },
+  { id: "dark", labelKey: "dark", icon: <IconMoon className="size-4" /> },
+  { id: "system", labelKey: "system", icon: <IconSystem className="size-4" /> },
+];
 
-function IconButtonGroup<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: T;
-  options: { id: T; label: string; icon: ReactNode }[];
-  onChange: (id: T) => void;
-}) {
+function LangButtons() {
+  const { locale, setLocale, t } = usePrefs();
+  const options: { id: Locale; label: string; short: string }[] = [
+    { id: "en", label: t.english, short: "EN" },
+    { id: "ar", label: t.arabic, short: "ع" },
+  ];
+
   return (
     <div
       className="inline-flex rounded-full border border-[var(--border)] bg-[var(--chip-bg)] p-0.5"
       role="group"
-      aria-label={label}
+      aria-label={t.lang}
     >
       {options.map((opt) => {
-        const active = value === opt.id;
+        const active = locale === opt.id;
         return (
           <button
             key={opt.id}
@@ -85,14 +92,16 @@ function IconButtonGroup<T extends string>({
             title={opt.label}
             aria-label={opt.label}
             aria-pressed={active}
-            onClick={() => onChange(opt.id)}
+            onClick={() => setLocale(opt.id)}
             className={`inline-flex size-7 items-center justify-center rounded-full transition ${
               active
                 ? "bg-[var(--chip-active-bg)] text-[var(--chip-active-fg)]"
                 : "text-[var(--muted)] hover:text-[var(--foreground)]"
             }`}
           >
-            {opt.icon}
+            <span className="text-[10px] font-bold leading-none tracking-wide">
+              {opt.short}
+            </span>
           </button>
         );
       })}
@@ -100,45 +109,98 @@ function IconButtonGroup<T extends string>({
   );
 }
 
-export function TopBar() {
-  const { locale, setLocale, appearance, setAppearance, t } = usePrefs();
+function AppearanceMenu() {
+  const { appearance, setAppearance, t } = usePrefs();
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
 
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div className="relative" ref={rootRef}>
+      <button
+        type="button"
+        title={t.appearance}
+        aria-label={t.appearance}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={menuId}
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex size-8 items-center justify-center rounded-full transition hover:scale-105 active:scale-95"
+      >
+        <Image
+          src="/brand/icon-appearance.png"
+          alt=""
+          width={28}
+          height={28}
+          className="size-7 object-contain"
+          priority
+        />
+      </button>
+
+      {open ? (
+        <div
+          id={menuId}
+          role="menu"
+          aria-label={t.appearance}
+          className="absolute end-0 top-[calc(100%+6px)] z-50 min-w-[148px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] py-1 shadow-[var(--card-shadow)]"
+        >
+          {appearanceMenu.map((opt) => {
+            const active = appearance === opt.id;
+            const label = t[opt.labelKey];
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                role="menuitemradio"
+                aria-checked={active}
+                onClick={() => {
+                  setAppearance(opt.id);
+                  setOpen(false);
+                }}
+                className={`flex w-full items-center gap-2.5 px-3 py-2 text-start text-xs font-semibold transition ${
+                  active
+                    ? "bg-[var(--chip-bg)] text-[var(--foreground)]"
+                    : "text-[var(--muted)] hover:bg-[var(--chip-bg)] hover:text-[var(--foreground)]"
+                }`}
+              >
+                <span className="inline-flex size-5 items-center justify-center">
+                  {opt.icon}
+                </span>
+                <span>{label}</span>
+                {active ? (
+                  <span className="ms-auto text-[10px] opacity-60">✓</span>
+                ) : null}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export function TopBar() {
   return (
     <div className="border-b border-[var(--border)] bg-[var(--topbar-bg)]">
       <div className="mx-auto flex h-9 max-w-[1400px] items-center justify-end gap-2.5 px-4 sm:gap-3 sm:px-6">
-        <IconButtonGroup
-          label={t.lang}
-          value={locale}
-          options={[
-            {
-              id: "en" as Locale,
-              label: t.english,
-              icon: (
-                <span className="text-[10px] font-bold leading-none tracking-wide">
-                  EN
-                </span>
-              ),
-            },
-            {
-              id: "ar" as Locale,
-              label: t.arabic,
-              icon: (
-                <span className="text-[11px] font-bold leading-none">ع</span>
-              ),
-            },
-          ]}
-          onChange={setLocale}
-        />
-        <IconButtonGroup
-          label={t.appearance}
-          value={appearance}
-          options={[
-            { id: "light" as Appearance, label: t.light, icon: appearanceIcons.light },
-            { id: "dark" as Appearance, label: t.dark, icon: appearanceIcons.dark },
-            { id: "system" as Appearance, label: t.system, icon: appearanceIcons.system },
-          ]}
-          onChange={setAppearance}
-        />
+        <LangButtons />
+        <AppearanceMenu />
       </div>
     </div>
   );

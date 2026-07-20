@@ -27,6 +27,10 @@ export const metadata: Metadata = {
     siteName: "Tool2Day Design",
     type: "website",
   },
+  icons: {
+    icon: [{ url: "/brand-mark.svg", type: "image/svg+xml" }],
+    apple: "/brand-mark.svg",
+  },
 };
 
 export default function RootLayout({

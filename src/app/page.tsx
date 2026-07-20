@@ -1,4 +1,5 @@
 import { Gallery } from "@/components/gallery";
+import { DesignBrandMark } from "@/components/design-brand-mark";
 
 export default function Home() {
   return (
@@ -8,16 +9,11 @@ export default function Home() {
           <div className="flex items-center gap-3">
             <a
               href="/"
-              className="inline-flex items-center gap-2 font-extrabold tracking-tight text-white"
+              className="inline-flex items-center gap-2.5 font-extrabold tracking-tight text-white"
             >
-              <span className="grid h-5 w-5 grid-cols-2 gap-0.5">
-                <span className="rounded-[2px] bg-[#f5c518]" />
-                <span className="rounded-[2px] bg-[#38bdf8]" />
-                <span className="rounded-[2px] bg-[#a78bfa]" />
-                <span className="rounded-[2px] bg-[#f472b6]" />
-              </span>
+              <DesignBrandMark size={22} />
               <span>
-                tool2day<span className="text-white/45"> design</span>
+                tool2day<span className="font-semibold text-white/45"> design</span>
               </span>
             </a>
             <a

@@ -1,0 +1,49 @@
+/** شعار الأربع مربعات بأسلوب Bento */
+export function DesignBrandMark({
+  size = 20,
+  className = "",
+}: {
+  size?: number;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-grid shrink-0 grid-cols-2 grid-rows-2 ${className}`}
+      style={{
+        width: size,
+        height: size,
+        gap: Math.max(1.5, size * 0.1),
+      }}
+      aria-hidden
+    >
+      <span
+        className="block"
+        style={{
+          background: "#F5C518",
+          borderRadius: Math.max(3, size * 0.22),
+        }}
+      />
+      <span
+        className="block"
+        style={{
+          background: "#5BCCF6",
+          borderRadius: Math.max(3, size * 0.22),
+        }}
+      />
+      <span
+        className="block"
+        style={{
+          background: "#B48CF0",
+          borderRadius: Math.max(3, size * 0.22),
+        }}
+      />
+      <span
+        className="block"
+        style={{
+          background: "#F071A8",
+          borderRadius: Math.max(3, size * 0.22),
+        }}
+      />
+    </span>
+  );
+}

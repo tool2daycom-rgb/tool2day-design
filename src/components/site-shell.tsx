@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Gallery } from "@/components/gallery";
 import { DesignBrandMark } from "@/components/design-brand-mark";
-import { TopBar } from "@/components/top-bar";
+import { PrefsControls } from "@/components/top-bar";
 import { usePrefs } from "@/components/prefs-provider";
 
 export function SiteShell() {
@@ -15,39 +15,38 @@ export function SiteShell() {
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <div className="sticky top-0 z-40">
-        <TopBar />
-        <header className="border-b border-[var(--border)] bg-[var(--header-bg)] backdrop-blur-md">
-          <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-4 px-4 sm:px-6">
-            <div className="flex items-center gap-3">
-              <a
-                href="/"
-                className="inline-flex items-center gap-2.5 font-extrabold tracking-tight"
-              >
-                <DesignBrandMark size={24} animated />
-                <span>
-                  tool2day
-                  <span className="font-semibold text-[var(--muted)]">
-                    {" "}
-                    design
-                  </span>
+      <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--header-bg)] backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-3 px-4 sm:h-16 sm:gap-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3.5">
+            <a
+              href="/"
+              className="inline-flex min-w-0 items-center gap-2.5 font-extrabold tracking-tight sm:gap-3"
+            >
+              <DesignBrandMark size={34} animated />
+              <span className="truncate text-base sm:text-lg">
+                tool2day
+                <span className="font-semibold text-[var(--muted)]">
+                  {" "}
+                  design
                 </span>
-              </a>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="hidden text-xs text-[var(--muted)] md:inline">
-                {t.tagline}
               </span>
-              <a
-                href="https://tool2day.com"
-                className="rounded-full bg-[#f5c518] px-3.5 py-1.5 text-xs font-bold text-[#111] transition hover:brightness-110"
-              >
-                {t.getTemplates}
-              </a>
-            </div>
+            </a>
+            <a
+              href="https://tool2day.com"
+              className="shrink-0 rounded-full bg-[#f5c518] px-3 py-1.5 text-[11px] font-bold text-[#111] transition hover:brightness-110 sm:px-3.5 sm:text-xs"
+            >
+              {t.getTemplates}
+            </a>
           </div>
-        </header>
-      </div>
+
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <span className="hidden text-xs text-[var(--muted)] lg:inline">
+              {t.tagline}
+            </span>
+            <PrefsControls />
+          </div>
+        </div>
+      </header>
 
       <main className="pt-8">
         <div className="mx-auto mb-10 flex max-w-[1400px] flex-col items-center px-4 text-center sm:px-6">

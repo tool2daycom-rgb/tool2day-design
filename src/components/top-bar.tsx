@@ -261,12 +261,20 @@ function AppearanceMenu() {
   );
 }
 
+export function PrefsControls({ className = "" }: { className?: string }) {
+  return (
+    <div className={`inline-flex items-center gap-1.5 sm:gap-2 ${className}`}>
+      <LanguageMenu />
+      <AppearanceMenu />
+    </div>
+  );
+}
+
 export function TopBar() {
   return (
     <div className="border-b border-[var(--border)] bg-[var(--topbar-bg)]">
       <div className="mx-auto flex h-9 max-w-[1400px] items-center justify-end gap-2 px-4 sm:gap-2.5 sm:px-6">
-        <LanguageMenu />
-        <AppearanceMenu />
+        <PrefsControls />
       </div>
     </div>
   );

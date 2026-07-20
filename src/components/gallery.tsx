@@ -62,7 +62,7 @@ export function Gallery() {
 
   return (
     <div className="mx-auto w-full max-w-[1400px] px-4 pb-20 sm:px-6">
-      <div className="sticky top-[93px] z-30 -mx-4 mb-6 border-y border-[var(--border)] bg-[var(--surface-2)]/90 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-2xl sm:border sm:px-3">
+      <div className="sticky top-14 z-30 -mx-4 mb-6 border-y border-[var(--border)] bg-[var(--surface-2)]/90 px-4 py-3 backdrop-blur-md sm:top-16 sm:mx-0 sm:rounded-2xl sm:border sm:px-3">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap gap-1.5">
             {categories.map((c) => {

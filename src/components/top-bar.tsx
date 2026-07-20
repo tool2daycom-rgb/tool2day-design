@@ -10,29 +10,52 @@ import {
 import { usePrefs } from "@/components/prefs-provider";
 import type { Appearance, Locale } from "@/lib/prefs";
 
-function IconSun({ className = "" }: { className?: string }) {
+/** شمس ملوّنة — للوضع النهاري */
+function IconSun({ className = "", gid = "sun" }: { className?: string; gid?: string }) {
+  const glowId = `${gid}-glow`;
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="12" cy="12" r="3.75" stroke="currentColor" strokeWidth="1.6" />
-      <path
-        d="M12 2.75v1.9M12 19.35v1.9M2.75 12h1.9M19.35 12h1.9M5.2 5.2l1.35 1.35M17.45 17.45l1.35 1.35M5.2 18.8l1.35-1.35M17.45 6.55l1.35-1.35"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
+      <circle cx="12" cy="12" r="4.1" fill="#F5C518" />
+      <circle cx="12" cy="12" r="4.1" fill={`url(#${glowId})`} opacity="0.45" />
+      <g stroke="#FF8A1F" strokeWidth="1.85" strokeLinecap="round">
+        <path d="M12 2.6v2.1M12 19.3v2.1M2.6 12h2.1M19.3 12h2.1" />
+        <path d="M5.05 5.05l1.5 1.5M17.45 17.45l1.5 1.5M5.05 18.95l1.5-1.5M17.45 6.55l1.5-1.5" />
+      </g>
+      <defs>
+        <radialGradient id={glowId} cx="35%" cy="30%" r="65%">
+          <stop offset="0%" stopColor="#FFF6B0" />
+          <stop offset="100%" stopColor="#F5C518" stopOpacity="0" />
+        </radialGradient>
+      </defs>
     </svg>
   );
 }
 
-function IconMoon({ className = "" }: { className?: string }) {
+/** هلال ملوّن مع نجمة — للوضع الليلي */
+function IconCrescent({
+  className = "",
+  gid = "moon",
+}: {
+  className?: string;
+  gid?: string;
+}) {
+  const glowId = `${gid}-glow`;
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
-        d="M19.25 13.35A7.35 7.35 0 0 1 10.65 4.75 7.5 7.5 0 1 0 19.25 13.35Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
+        d="M15.8 4.4a7.7 7.7 0 1 0 3.9 13.55A8.35 8.35 0 1 1 15.8 4.4Z"
+        fill={`url(#${glowId})`}
       />
+      <path
+        d="M17.6 7.15l.55 1.15 1.25.2-.9.9.2 1.25-1.1-.55-1.1.55.2-1.25-.9-.9 1.25-.2.55-1.15Z"
+        fill="#FDE68A"
+      />
+      <defs>
+        <linearGradient id={glowId} x1="8" y1="5" x2="18" y2="20">
+          <stop offset="0%" stopColor="#E0F2FE" />
+          <stop offset="100%" stopColor="#38BDF8" />
+        </linearGradient>
+      </defs>
     </svg>
   );
 }
@@ -40,21 +63,17 @@ function IconMoon({ className = "" }: { className?: string }) {
 function IconSystem({ className = "" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect
-        x="3.75"
-        y="4.75"
-        width="16.5"
-        height="11.5"
-        rx="2"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
+      <rect x="3.5" y="4.5" width="17" height="11.5" rx="2" fill="#94A3B8" />
+      <rect x="5" y="6" width="14" height="8" rx="1" fill="#0F172A" />
       <path
-        d="M8.5 19.25h7M12 16.25v3"
-        stroke="currentColor"
-        strokeWidth="1.6"
+        d="M8.5 19.25h7M12 16v3.25"
+        stroke="#64748B"
+        strokeWidth="1.7"
         strokeLinecap="round"
       />
+      <circle cx="9.2" cy="10" r="0.9" fill="#F5C518" />
+      <circle cx="12" cy="10" r="0.9" fill="#7DD3FC" />
+      <circle cx="14.8" cy="10" r="0.9" fill="#A78BFA" />
     </svg>
   );
 }
@@ -73,11 +92,6 @@ function IconGlobe({ className = "" }: { className?: string }) {
   );
 }
 
-const appearanceIcons: Record<Appearance, ReactNode> = {
-  light: <IconSun className="size-[18px]" />,
-  dark: <IconMoon className="size-[18px]" />,
-  system: <IconSystem className="size-[18px]" />,
-};
 
 function IconMenuButton({
   label,
@@ -200,19 +214,35 @@ function LanguageMenu() {
 }
 
 function AppearanceMenu() {
-  const { appearance, setAppearance, t } = usePrefs();
+  const { appearance, setAppearance, theme, t } = usePrefs();
+  // الزر يعكس الوضع الفعلي (بما فيه نظام الجهاز)
+  const triggerIcon =
+    theme === "light" ? (
+      <IconSun className="size-[18px]" gid="sun-trigger" />
+    ) : (
+      <IconCrescent className="size-[18px]" gid="moon-trigger" />
+    );
+
   const options: {
     id: Appearance;
     label: string;
     icon: ReactNode;
   }[] = [
-    { id: "light", label: t.light, icon: <IconSun className="size-4" /> },
-    { id: "dark", label: t.dark, icon: <IconMoon className="size-4" /> },
+    {
+      id: "light",
+      label: t.light,
+      icon: <IconSun className="size-4" gid="sun-menu" />,
+    },
+    {
+      id: "dark",
+      label: t.dark,
+      icon: <IconCrescent className="size-4" gid="moon-menu" />,
+    },
     { id: "system", label: t.system, icon: <IconSystem className="size-4" /> },
   ];
 
   return (
-    <IconMenuButton label={t.appearance} icon={appearanceIcons[appearance]}>
+    <IconMenuButton label={t.appearance} icon={triggerIcon}>
       {(close) =>
         options.map((opt) => (
           <MenuOption

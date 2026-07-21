@@ -227,45 +227,37 @@ export function BentoPreview({ item }: { item: DesignTemplate }) {
       </div>
     ),
     g: (
-      <div className="relative h-full overflow-hidden bg-[#0a0a0b]">
-        <div
-          className="absolute inset-0 opacity-90"
-          style={{
-            background: `
-              linear-gradient(160deg, #0a0a0b 10%, transparent 45%),
-              linear-gradient(0deg, #0a0a0b 15%, transparent 50%),
-              radial-gradient(ellipse at 70% 45%, ${item.accent}33, transparent 55%),
-              linear-gradient(135deg, #1a1a1e, #0a0a0b)
-            `,
-          }}
-        />
-        <div className="absolute inset-x-0 bottom-0 p-3">
-          <p className="text-[9px] uppercase tracking-[0.2em] opacity-50">
-            Showroom
-          </p>
-          <p className="mt-1 text-sm font-bold tracking-tight">Velocity</p>
-          <div className="mt-2 flex gap-1.5">
-            {["SUV", "GT", "EV"].map((t) => (
-              <span
-                key={t}
-                className="rounded-md px-1.5 py-0.5 text-[8px] font-semibold"
-                style={{
-                  background: `${item.accent}22`,
-                  color: item.accent,
-                }}
-              >
-                {t}
-              </span>
-            ))}
+      <div className="relative h-full overflow-hidden bg-black p-2.5">
+        <div className="grid h-full grid-cols-3 grid-rows-2 gap-2">
+          <div className="relative col-span-2 row-span-2 overflow-hidden rounded-2xl bg-[#2f6bff]">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.25),transparent_50%)]" />
+            <p className="absolute start-2.5 top-2.5 text-[9px] font-bold text-white/80">
+              Velocity
+            </p>
+            <p className="absolute start-2.5 bottom-2.5 max-w-[70%] text-[11px] font-extrabold leading-tight text-white">
+              سيارة أحلامك
+            </p>
+            <div
+              className="absolute -end-1 bottom-2 h-14 w-20 rounded-xl"
+              style={{
+                background: `linear-gradient(135deg, ${item.accent}, #1a1205)`,
+                boxShadow: `0 8px 20px ${item.accent}55`,
+              }}
+            />
+          </div>
+          <div className="rounded-2xl bg-[#d8ecff] p-2">
+            <p className="text-[8px] font-bold text-[#2f6bff]">EV</p>
+            <p className="mt-1 text-[10px] font-extrabold text-[#0b1220]">
+              450km
+            </p>
+          </div>
+          <div className="rounded-2xl bg-[#f3e8ff] p-2">
+            <p className="text-[8px] font-bold text-[#7c3aed]">Finance</p>
+            <p className="mt-1 text-[10px] font-extrabold text-[#1a1024]">
+              1,999
+            </p>
           </div>
         </div>
-        <div
-          className="absolute end-3 top-3 h-10 w-16 rounded-lg border border-white/10"
-          style={{
-            background: `linear-gradient(145deg, ${item.accent}, #3a2a0a)`,
-            boxShadow: `0 8px 24px ${item.accent}44`,
-          }}
-        />
       </div>
     ),
   };

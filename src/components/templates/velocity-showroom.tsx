@@ -137,10 +137,19 @@ export function VelocityShowroom() {
         }`}
       >
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          <a href="#top" className="text-lg font-extrabold tracking-tight">
-            Velocity
-            <span className="ms-1.5 font-semibold text-[var(--v-amber)]">
-              Motors
+          <a href="#top" className="inline-flex items-center gap-2.5">
+            <img
+              src="/brand/velocity-logo-mark.png"
+              alt=""
+              width={44}
+              height={44}
+              className="size-10 object-contain sm:size-11"
+            />
+            <span className="text-lg font-extrabold tracking-tight">
+              Velocity
+              <span className="ms-1.5 font-semibold text-[var(--v-amber)]">
+                Motors
+              </span>
             </span>
           </a>
           <nav className="hidden items-center gap-6 text-sm text-white/70 md:flex">
@@ -187,10 +196,19 @@ export function VelocityShowroom() {
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-16 pt-28 sm:px-6 sm:pb-20">
-          <p className="v-rise text-xs font-semibold uppercase tracking-[0.28em] text-[var(--v-amber)]">
-            معرض سيارات فاخر
-          </p>
-          <h1 className="v-rise-2 mt-4 max-w-3xl text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-7xl">
+          <div className="v-rise mb-5 inline-flex items-center gap-3">
+            <img
+              src="/brand/velocity-logo-3d.png"
+              alt="Velocity Motors"
+              width={72}
+              height={72}
+              className="size-14 object-contain drop-shadow-[0_8px_24px_rgba(232,163,23,0.35)] sm:size-16"
+            />
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--v-amber)]">
+              معرض سيارات فاخر
+            </p>
+          </div>
+          <h1 className="v-rise-2 mt-0 max-w-3xl text-5xl font-extrabold leading-[1.05] tracking-tight sm:text-7xl">
             Velocity
           </h1>
           <p className="v-rise-3 mt-4 max-w-md text-base leading-7 text-white/70 sm:text-lg">

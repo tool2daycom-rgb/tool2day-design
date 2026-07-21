@@ -170,9 +170,9 @@ export function VelocityShowroom() {
         {/* Alfa-style asymmetric bento */}
         <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-12 lg:grid-rows-[minmax(420px,auto)_minmax(220px,auto)]">
           {/* Hero card */}
-          <article className="vw-card vw-in relative overflow-hidden bg-[var(--vw-blue)] lg:col-span-8 lg:row-span-2">
+          <article className="vw-card vw-in relative overflow-hidden bg-black lg:col-span-8 lg:row-span-2">
             <video
-              className="vw-video absolute inset-0 h-full w-full opacity-35"
+              className="vw-video absolute inset-0 h-full w-full opacity-70"
               autoPlay
               muted
               loop
@@ -181,8 +181,7 @@ export function VelocityShowroom() {
             >
               <source src="/brand/velocity-media/hero.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_60%,rgba(255,255,255,0.16),transparent_55%)]" />
-            <div className="absolute inset-0 bg-gradient-to-l from-[#2f6bff]/80 via-[#2f6bff]/55 to-[#2f6bff]/90" />
+            <div className="absolute inset-0 bg-gradient-to-l from-black/75 via-black/50 to-black/80" />
             <div className="relative z-10 flex h-full min-h-[460px] flex-col justify-between p-6 sm:p-8 lg:p-10">
               <div className="max-w-md">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">

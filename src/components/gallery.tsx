@@ -103,40 +103,53 @@ export function Gallery() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filtered.map((item) => (
-          <article
-            key={item.id}
-            className="group relative overflow-hidden rounded-[1.35rem] border border-[var(--card-border)] bg-[var(--surface)] shadow-[var(--card-shadow)] transition hover:-translate-y-0.5"
-          >
-            {item.variants ? (
-              <span className="absolute end-3 top-3 z-10 inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-black/70 px-1.5 text-xs font-bold text-white backdrop-blur">
-                {item.variants}
-              </span>
-            ) : null}
-            <div className="aspect-[4/3.2] overflow-hidden">
-              <BentoPreview item={item} />
-            </div>
-            <div className="flex items-start justify-between gap-3 border-t border-[var(--border)] px-3.5 py-3">
-              <div className="min-w-0">
-                <h2 className="truncate text-sm font-semibold">
-                  {item.title}
-                </h2>
-                <p className="mt-0.5 truncate text-[11px] text-[var(--muted)]">
-                  {item.tags.join(" · ")}
-                </p>
+        {filtered.map((item) => {
+          const Card = (
+            <article className="group relative overflow-hidden rounded-[1.35rem] border border-[var(--card-border)] bg-[var(--surface)] shadow-[var(--card-shadow)] transition hover:-translate-y-0.5">
+              {item.variants ? (
+                <span className="absolute end-3 top-3 z-10 inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-black/70 px-1.5 text-xs font-bold text-white backdrop-blur">
+                  {item.variants}
+                </span>
+              ) : null}
+              <div className="aspect-[4/3.2] overflow-hidden">
+                <BentoPreview item={item} />
               </div>
-              <span
-                className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${
-                  item.price === "free"
-                    ? "bg-emerald-400/15 text-emerald-600 dark:text-emerald-300"
-                    : "bg-[#f5c518]/15 text-[#b45309] dark:text-[#f5c518]"
-                }`}
+              <div className="flex items-start justify-between gap-3 border-t border-[var(--border)] px-3.5 py-3">
+                <div className="min-w-0">
+                  <h2 className="truncate text-sm font-semibold">
+                    {item.title}
+                  </h2>
+                  <p className="mt-0.5 truncate text-[11px] text-[var(--muted)]">
+                    {item.tags.join(" · ")}
+                  </p>
+                </div>
+                <span
+                  className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] font-bold ${
+                    item.price === "free"
+                      ? "bg-emerald-400/15 text-emerald-600 dark:text-emerald-300"
+                      : "bg-[#f5c518]/15 text-[#b45309] dark:text-[#f5c518]"
+                  }`}
+                >
+                  {formatPrice(item.price)}
+                </span>
+              </div>
+            </article>
+          );
+
+          if (item.href) {
+            return (
+              <a
+                key={item.id}
+                href={item.href}
+                className="block outline-none focus-visible:ring-2 focus-visible:ring-[#f5c518]"
               >
-                {formatPrice(item.price)}
-              </span>
-            </div>
-          </article>
-        ))}
+                {Card}
+              </a>
+            );
+          }
+
+          return <div key={item.id}>{Card}</div>;
+        })}
       </div>
 
       {filtered.length === 0 ? (

@@ -10,11 +10,24 @@ export type DesignTemplate = {
   variants?: number;
   price: number | "free";
   accent: string;
-  layout: "a" | "b" | "c" | "d" | "e" | "f";
+  layout: "a" | "b" | "c" | "d" | "e" | "f" | "g";
   tags: string[];
+  href?: string;
 };
 
 export const templates: DesignTemplate[] = [
+  {
+    id: "velocity-motors",
+    title: "Velocity Motors Showroom",
+    category: "web",
+    theme: "dark",
+    variants: 1,
+    price: 89,
+    accent: "#e8a317",
+    layout: "g",
+    tags: ["Cars", "Showroom", "Landing"],
+    href: "/templates/velocity",
+  },
   {
     id: "nova-saas",
     title: "Nova SaaS Landing",

@@ -226,6 +226,48 @@ export function BentoPreview({ item }: { item: DesignTemplate }) {
         </div>
       </div>
     ),
+    g: (
+      <div className="relative h-full overflow-hidden bg-[#0a0a0b]">
+        <div
+          className="absolute inset-0 opacity-90"
+          style={{
+            background: `
+              linear-gradient(160deg, #0a0a0b 10%, transparent 45%),
+              linear-gradient(0deg, #0a0a0b 15%, transparent 50%),
+              radial-gradient(ellipse at 70% 45%, ${item.accent}33, transparent 55%),
+              linear-gradient(135deg, #1a1a1e, #0a0a0b)
+            `,
+          }}
+        />
+        <div className="absolute inset-x-0 bottom-0 p-3">
+          <p className="text-[9px] uppercase tracking-[0.2em] opacity-50">
+            Showroom
+          </p>
+          <p className="mt-1 text-sm font-bold tracking-tight">Velocity</p>
+          <div className="mt-2 flex gap-1.5">
+            {["SUV", "GT", "EV"].map((t) => (
+              <span
+                key={t}
+                className="rounded-md px-1.5 py-0.5 text-[8px] font-semibold"
+                style={{
+                  background: `${item.accent}22`,
+                  color: item.accent,
+                }}
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div
+          className="absolute end-3 top-3 h-10 w-16 rounded-lg border border-white/10"
+          style={{
+            background: `linear-gradient(145deg, ${item.accent}, #3a2a0a)`,
+            boxShadow: `0 8px 24px ${item.accent}44`,
+          }}
+        />
+      </div>
+    ),
   };
 
   return (

@@ -198,14 +198,6 @@ export function VelocityShowroom() {
                 </p>
               </div>
 
-              <div className="pointer-events-none absolute -start-6 bottom-8 top-28 flex items-center sm:start-auto sm:end-[-4%] sm:bottom-0 sm:top-16 sm:w-[58%]">
-                <img
-                  src="/brand/velocity-logo-3d.png"
-                  alt="Velocity 3D car"
-                  className="h-full max-h-[340px] w-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.45)] sm:max-h-none"
-                />
-              </div>
-
               <div className="relative z-10 flex flex-wrap items-center gap-3 pt-8">
                 <a
                   href="#fleet"

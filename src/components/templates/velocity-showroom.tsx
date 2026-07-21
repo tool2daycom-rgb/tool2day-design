@@ -11,6 +11,7 @@ type Car = {
   power: string;
   type: string;
   image: string;
+  video?: string;
   tone: string;
 };
 
@@ -25,6 +26,7 @@ const cars: Car[] = [
     tone: "#1a1a1f",
     image:
       "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=1200&q=80",
+    video: "/brand/velocity-media/hero.mp4",
   },
   {
     id: "2",
@@ -36,6 +38,7 @@ const cars: Car[] = [
     tone: "#152028",
     image:
       "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80",
+    video: "/brand/velocity-media/suv.mp4",
   },
   {
     id: "3",
@@ -47,6 +50,7 @@ const cars: Car[] = [
     tone: "#121a16",
     image:
       "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1200&q=80",
+    video: "/brand/velocity-media/ev.mp4",
   },
   {
     id: "4",
@@ -96,6 +100,11 @@ export function VelocityShowroom() {
         @media (prefers-reduced-motion: reduce) {
           .vw-card:hover { transform: none; }
           .vw-in, .vw-in-2, .vw-in-3, .vw-in-4 { animation: none; }
+        }
+        .vw-video {
+          object-fit: cover;
+          object-position: center;
+          filter: saturate(1.08) contrast(1.03);
         }
       `}</style>
 
@@ -162,7 +171,18 @@ export function VelocityShowroom() {
         <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-12 lg:grid-rows-[minmax(420px,auto)_minmax(220px,auto)]">
           {/* Hero card */}
           <article className="vw-card vw-in relative overflow-hidden bg-[var(--vw-blue)] lg:col-span-8 lg:row-span-2">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_60%,rgba(255,255,255,0.18),transparent_55%)]" />
+            <video
+              className="vw-video absolute inset-0 h-full w-full opacity-35"
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster="/brand/velocity-media/hero.jpg"
+            >
+              <source src="/brand/velocity-media/hero.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_60%,rgba(255,255,255,0.16),transparent_55%)]" />
+            <div className="absolute inset-0 bg-gradient-to-l from-[#2f6bff]/80 via-[#2f6bff]/55 to-[#2f6bff]/90" />
             <div className="relative z-10 flex h-full min-h-[460px] flex-col justify-between p-6 sm:p-8 lg:p-10">
               <div className="max-w-md">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
@@ -205,6 +225,16 @@ export function VelocityShowroom() {
 
           {/* Side card 1 — EV */}
           <article className="vw-card vw-in-2 relative overflow-hidden bg-[#d8ecff] text-[#0b1220] lg:col-span-4">
+            <video
+              className="vw-video absolute inset-0 h-full w-full opacity-30"
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster="/brand/velocity-media/ev.jpg"
+            >
+              <source src="/brand/velocity-media/ev.mp4" type="video/mp4" />
+            </video>
             <div className="flex h-full min-h-[200px] flex-col justify-between p-5 sm:p-6">
               <div>
                 <p className="text-xs font-bold text-[#2f6bff]">كهربائية</p>
@@ -221,11 +251,18 @@ export function VelocityShowroom() {
                 >
                   التفاصيل
                 </a>
-                <img
-                  src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=400&q=80"
-                  alt=""
-                  className="h-20 w-28 rounded-2xl object-cover shadow-lg"
-                />
+                <div className="overflow-hidden rounded-2xl shadow-lg">
+                  <video
+                    className="h-20 w-28 object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    poster="/brand/velocity-media/ev.jpg"
+                  >
+                    <source src="/brand/velocity-media/ev.mp4" type="video/mp4" />
+                  </video>
+                </div>
               </div>
             </div>
           </article>
@@ -340,11 +377,25 @@ export function VelocityShowroom() {
               className="vw-card relative min-h-[320px] overflow-hidden lg:col-span-7"
               style={{ background: cars[active].tone }}
             >
-              <img
-                src={cars[active].image}
-                alt={cars[active].name}
-                className="absolute inset-0 h-full w-full object-cover opacity-80"
-              />
+              {cars[active].video ? (
+                <video
+                  key={cars[active].video}
+                  className="vw-video absolute inset-0 h-full w-full opacity-80"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster={cars[active].image}
+                >
+                  <source src={cars[active].video} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={cars[active].image}
+                  alt={cars[active].name}
+                  className="absolute inset-0 h-full w-full object-cover opacity-80"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
               <div className="relative z-10 flex h-full min-h-[320px] flex-col justify-end p-6 sm:p-8">
                 <p className="text-xs font-semibold text-[var(--vw-amber)]">
